@@ -69,7 +69,22 @@ public class DayActivity extends AppCompatActivity {
         saveTestText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveFile(testText,"test.txt");
+
+                //saveFile(testText, "test.txt");
+
+                DateObject today;
+
+                try {
+                    today = new DateObject(date);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    today = new DateObject("01/11/1993");
+                }
+                Log.d(TAG, "Test button has been pressed");
+
+                DatabaseHelper dh = new DatabaseHelper(DayActivity.this);
+                boolean itsBeenAdded = dh.add(today);
+                Log.d(TAG, "Database Insert = " + itsBeenAdded);
             }
         });
     }
@@ -100,9 +115,11 @@ public class DayActivity extends AppCompatActivity {
     private void loadDateObject(String date) {
         if (checkDateExists(date)){ return; }
         DateObject today = new DateObject(date);
+
+
     }
 
-    //TODO build checkDateExists(), return boolean
+    //TODO build checkDateExists(), return boolean whether date exists in database
     private boolean checkDateExists(String date) {
         return false;
     }
@@ -118,8 +135,6 @@ public class DayActivity extends AppCompatActivity {
         //Drawable image = getDrawable(imageID);
         imageHolder.setImageDrawable(image);
 
-//        this is slow:
-//        backgroundImg.setImageResource(R.drawable.corgi11);
     }
 
     //TODO build getImageID()
@@ -128,6 +143,8 @@ public class DayActivity extends AppCompatActivity {
         
         return 1;
     }
+
+
 }
 
 

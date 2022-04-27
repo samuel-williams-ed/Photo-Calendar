@@ -32,8 +32,10 @@ public class MainActivity extends AppCompatActivity {
                 String month;
                 if(i1 < 9){
                     month = "0" + (i1+1);
+                    Log.d(TAG, "the month = " + month);
                 } else {
                     month = Integer.toString((i1+1));
+                    Log.d(TAG, "the month = " + month);
                 }
 
                 String date = i2 + "/" + month + "/" + i;

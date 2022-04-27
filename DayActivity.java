@@ -35,7 +35,7 @@ public class DayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.day_layout);
 
-        Log.d(TAG, " has been called");
+        Log.d(TAG, " DayActivity has been called");
 
         //Hookup view elements
         dateText = findViewById(R.id.dayLayout_dateText_TV);
@@ -89,29 +89,25 @@ public class DayActivity extends AppCompatActivity {
         });
     }
 
-    public void saveFile(EditText rawData, String fileName) {
-        FileOutputStream my_output_stream = null;
-        String my_data = rawData.getText().toString();
+//    public void saveFile(EditText rawData, String fileName) {
+//        FileOutputStream my_output_stream = null;
+//        String my_data = rawData.getText().toString();
+//
+//        try {
+//            my_output_stream = openFileOutput(fileName, MODE_PRIVATE);
+//            OutputStreamWriter my_writer = new OutputStreamWriter(my_output_stream);
+//            my_writer.write(my_data);
+//            my_writer.close();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        Log.d(TAG, "saveFile() completed successfully.");
+//    }
 
-        try {
-            my_output_stream = openFileOutput(fileName, MODE_PRIVATE);
-            OutputStreamWriter my_writer = new OutputStreamWriter(my_output_stream);
-            my_writer.write(my_data);
-            my_writer.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Log.d(TAG, "saveFile() completed successfully.");
-    }
 
-    //TODO build readFile()
-    public String readFile(String fileName){
-
-        return "no files yet";
-    }
-
+    //TODO do we need a loadDateObject() method in MainActivity?
     private void loadDateObject(String date) {
         if (checkDateExists(date)){ return; }
         DateObject today = new DateObject(date);

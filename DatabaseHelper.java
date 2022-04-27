@@ -2,13 +2,21 @@ package com.example.calendartutorial;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+    public static final String TAG = "DatabaseHelper.java ";
     public static final String DATES_TABLE = "NEW_DATES_TABLE";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_DAY = "DAY";
@@ -51,6 +59,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return false;
         } else
             return true;
+    }
+
+    //TODO apply method retrieveFull() to display database data somewhere on screen
+    public List<DateObject> retrieveFull(String id){
+        List result = new ArrayList<>();
+        String queryString = "Select * FROM " + DATES_TABLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()){
+            do{
+                String col_id = cursor.getString(0);
+                String col_day = cursor.getString(1);
+                String col_month = cursor.getString(2);
+                String col_year = cursor.getString(3);
+
+                DateObject dateToAdd = new DateObject(col_id);
+                result.add(dateToAdd);
+            } while (cursor.moveToNext());
+        } else {
+            Log.d(TAG, " cursor returned no values!");
+        }
+
+        return result;
     }
 
 }

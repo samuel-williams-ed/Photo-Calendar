@@ -124,7 +124,7 @@
         android:layout_width="237dp"
         android:layout_height="98dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="36dp"
         android:ems="10"
         android:hint="testing text here..."
         android:inputType="textPersonName"
@@ -141,5 +141,19 @@
         app:layout_constraintStart_toEndOf="@+id/editText_test"
         app:layout_constraintTop_toTopOf="@+id/editText_test"
         app:layout_constraintVertical_bias="0.48" />
+
+    <ListView
+        android:id="@+id/test_displayData_LV"
+        android:layout_width="341dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="#40000000"
+        android:text="TextView"
+        android:textColor="#F3F3F3"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/saveTestText"
+        app:layout_constraintStart_toStartOf="@+id/editText_test"
+        app:layout_constraintTop_toBottomOf="@+id/editText_test"
+        tools:text="Placeholder text just here" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

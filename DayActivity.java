@@ -5,30 +5,39 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class DayActivity extends AppCompatActivity {
 
-    public static final String TAG = "DayActivity: ";
-
+    public static final String TAG = "DayActivity";
     TextView dateText;
     Button homeButton;
     ImageView backgroundImg;
+    String userValues;
+    ListView eventDataDisplay;
+    DatabaseHelper dh;
+    EventsDatabaseHelper edh;
+    DateObject today_DO;
+    EventObject newEvent;
+    ArrayAdapter eventsArrayAdapter;
+
     //testing
     EditText testText;
     Button saveTestText;
+    List<EventObject> events_list;
+
+// TODO update events display to a scroll to fit multiple events
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,18 +50,28 @@ public class DayActivity extends AppCompatActivity {
         dateText = findViewById(R.id.dayLayout_dateText_TV);
         homeButton = findViewById(R.id.DayView_button_returnHome);
         backgroundImg = findViewById(R.id.dayView_backImage_IV);
+        eventDataDisplay = findViewById(R.id.test_displayData_LV);
 
         //retrieve data from incoming intents
         Intent catchIncomingIntent = getIntent();
-        String date = catchIncomingIntent.getStringExtra("date");
+        String raw_date = catchIncomingIntent.getStringExtra("date");
+        String date = clean(raw_date);
+
+        //initialise database
+        dh = new DatabaseHelper(DayActivity.this, "dates_database");
+        edh = new EventsDatabaseHelper(DayActivity.this);
+        try {
+            today_DO = new DateObject(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+            today_DO = new DateObject("01/11/1993");
+        }
 
         //set page data
-        dateText.setText(date);
-        setBackgroundImage(backgroundImg, date);
-        loadDateObject(date);
+        setPageData(date);
 
 
-        //return home
+        //return home click listener
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,65 +81,69 @@ public class DayActivity extends AppCompatActivity {
         });
 
 
-        //testing
-        testText = findViewById(R.id.editText_test);
-        saveTestText = findViewById(R.id.saveTestText);
-
+        // save Text to database
         saveTestText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //saveFile(testText, "test.txt");
-
-                DateObject today;
-
-                try {
-                    today = new DateObject(date);
+                try{
+                    userValues = testText.getText().toString();
                 } catch (Exception e) {
+                    Log.d(TAG, "test: error getting user values from testText object");
                     e.printStackTrace();
-                    today = new DateObject("01/11/1993");
                 }
                 Log.d(TAG, "Test button has been pressed");
 
-                DatabaseHelper dh = new DatabaseHelper(DayActivity.this);
-                boolean itsBeenAdded = dh.add(today);
+                newEvent = new EventObject(date, userValues);
+
+                boolean itsBeenAdded = edh.addEvent(newEvent);
                 Log.d(TAG, "Database Insert = " + itsBeenAdded);
+
+                //update UI
+                //TODO check displayEvents() is drawing from edh
+                displayEvents(today_DO);
+                testText.setText("");
             }
         });
     }
 
-//    public void saveFile(EditText rawData, String fileName) {
-//        FileOutputStream my_output_stream = null;
-//        String my_data = rawData.getText().toString();
-//
-//        try {
-//            my_output_stream = openFileOutput(fileName, MODE_PRIVATE);
-//            OutputStreamWriter my_writer = new OutputStreamWriter(my_output_stream);
-//            my_writer.write(my_data);
-//            my_writer.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        Log.d(TAG, "saveFile() completed successfully.");
-//    }
-
-
-    //TODO do we need a loadDateObject() method in MainActivity?
-    private void loadDateObject(String date) {
-        if (checkDateExists(date)){ return; }
-        DateObject today = new DateObject(date);
-
-
-    }
-
-    //TODO build checkDateExists(), return boolean whether date exists in database
-    private boolean checkDateExists(String date) {
-        return false;
-    }
 
     // ####### DayActivity Methods ########
+
+    private String clean(String raw_date) {
+        if(raw_date.length() == 9) {
+            return "0" + raw_date;
+        }
+        return raw_date;
+    }
+
+    private void setPageData(String date){
+        //set page data
+        dateText.setText(date);
+        setBackgroundImage(backgroundImg, date);
+        displayEvents(today_DO);
+
+        //testing
+        testText = findViewById(R.id.editText_test);
+        saveTestText = findViewById(R.id.saveTestText);
+    }
+
+    //TODO currently - dh.getEvents() is returning a list of Strings from database; only the column 'DATA' is being read from database by getEvents()
+    //TODO change this to returning an Event object - so when selected by user we can open an EventView Activity, where edit etc.,
+    private void displayEvents(DateObject eventDate){
+
+        events_list = edh.getEventObjects(eventDate);
+
+        List<String> events_data_list = new ArrayList<>();
+
+        for(EventObject event : events_list){
+            events_data_list.add(event.getName());
+        }
+
+        eventsArrayAdapter = new ArrayAdapter(DayActivity.this, android.R.layout.simple_list_item_1, events_data_list);
+        eventDataDisplay.setAdapter(eventsArrayAdapter);
+    }
+
 
     private void setBackgroundImage(ImageView imageHolder, String date){
 

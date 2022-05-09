@@ -1,5 +1,7 @@
 package com.example.calendartutorial;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class DateObject {
@@ -12,12 +14,14 @@ public class DateObject {
     String backgroundDrawableName;
     int backgroundPictureID;
 
+    public static String TAG = "DateObject.java";
+
     //constructor
     public DateObject(String date){
-        this.id = calcId(date);
-        this.day = calcDay(date);
-        this.month = calcMonth(date);
-        this.year = calcYear(date);
+        this.id = calcId(clean(date));
+        this.day = calcDay(clean(date));
+        this.month = calcMonth(clean(date));
+        this.year = calcYear(clean(date));
         this.events = null;
         this.reminders = null;
         this.backgroundDrawableName = calcBackgroundDrawableName();
@@ -26,8 +30,20 @@ public class DateObject {
         //this.backgroundPictureID = getBackgroundID(backgroundDrawableName);
     }
 
+    private String clean(String date){
+
+        if(date.length() == 9) {
+            return "0" + date;
+        }
+        return date;
+    }
+
     private int calcId(String date){
-        String editedDate = date.substring(6, 10) + date.substring(3,5) + date.substring(0, 2);
+        //return format: YYYYMMDD
+        Log.d(TAG, "calcId, parameter date = " + date);
+        String editedDate = date.substring(6, 10) + date.substring(3, 5) + date.substring(0, 2);
+
+        Log.d(TAG, "calcId, edited date = " + editedDate);
         return Integer.parseInt(editedDate);
     }
 

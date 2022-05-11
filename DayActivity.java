@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,12 @@ public class DayActivity extends AppCompatActivity {
 
     public static final String TAG = "DayActivity";
     TextView dateText;
+    TextView reminderText;
+    TextView eventsText;
+
+    Button saveEventsText;
     Button homeButton;
+
     ImageView backgroundImg;
     String userValues;
     ListView eventDataDisplay;
@@ -33,8 +40,8 @@ public class DayActivity extends AppCompatActivity {
     ArrayAdapter eventsArrayAdapter;
 
     //testing
-    EditText testText;
-    Button saveTestText;
+//    EditText testText;
+//    Button saveTestText;
     List<EventObject> events_list;
 
 // TODO update events display to a scroll to fit multiple events
@@ -48,9 +55,13 @@ public class DayActivity extends AppCompatActivity {
 
         //Hookup view elements
         dateText = findViewById(R.id.dayLayout_dateText_TV);
+        reminderText = findViewById(R.id.dayView_reminder1_TV);
+        eventsText = findViewById(R.id.dayView_event1_TV);
+
+        saveEventsText = findViewById(R.id.dayView_addEvent1_Bu);
         homeButton = findViewById(R.id.DayView_button_returnHome);
         backgroundImg = findViewById(R.id.dayView_backImage_IV);
-        eventDataDisplay = findViewById(R.id.test_displayData_LV);
+        eventDataDisplay = findViewById(R.id.dayView_eventsDisplay_TV);
 
         //retrieve data from incoming intents
         Intent catchIncomingIntent = getIntent();
@@ -82,12 +93,12 @@ public class DayActivity extends AppCompatActivity {
 
 
         // save Text to database
-        saveTestText.setOnClickListener(new View.OnClickListener() {
+        saveEventsText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 try{
-                    userValues = testText.getText().toString();
+                    userValues = eventsText.getText().toString();
                 } catch (Exception e) {
                     Log.d(TAG, "test: error getting user values from testText object");
                     e.printStackTrace();
@@ -102,7 +113,25 @@ public class DayActivity extends AppCompatActivity {
                 //update UI
                 //TODO check displayEvents() is drawing from edh
                 displayEvents(today_DO);
-                testText.setText("");
+                eventsText.setText("");
+            }
+        });
+
+        eventDataDisplay.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                //fragment pop-up
+                String name = (String) parent.getItemAtPosition(position);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                editEventFragment frag_editEvent = editEventFragment.newInstance(date, name);
+                ft.replace(R.id.dayLayout_placeholder, frag_editEvent);
+                ft.commit();
+                //set other view elements as hidden
+                dateText.setVisibility(View.GONE);
+                reminderText.setVisibility(View.GONE);
+                eventsText.setVisibility(View.GONE);
+
+
             }
         });
     }
@@ -123,9 +152,9 @@ public class DayActivity extends AppCompatActivity {
         setBackgroundImage(backgroundImg, date);
         displayEvents(today_DO);
 
-        //testing
-        testText = findViewById(R.id.editText_test);
-        saveTestText = findViewById(R.id.saveTestText);
+//        //testing
+//        eventsText = findViewById(R.id.dayView_event1_TV);
+//        saveEventsText = findViewById(R.id.dayView_addEvent1_Bu);
     }
 
     //TODO currently - dh.getEvents() is returning a list of Strings from database; only the column 'DATA' is being read from database by getEvents()

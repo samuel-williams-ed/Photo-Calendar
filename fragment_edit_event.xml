@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragEditEvent_frame_FL"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".editEventFragment">
+
+    <LinearLayout
+        android:id="@+id/editEventFrag_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="32dp"
+        android:background="#E63C3C3C"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/EditEventFrag_date_TV"
+            android:layout_width="match_parent"
+            android:layout_height="95dp"
+            android:text="TextView"
+            android:textAlignment="viewEnd"
+            android:textColor="#03A9F4"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/EditEventFrag_name_TV"
+            android:layout_width="match_parent"
+            android:layout_height="86dp"
+            android:text="TextView"
+            android:textColor="#03A9F4"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/EditEventFrag_location_TV"
+            android:layout_width="match_parent"
+            android:layout_height="129dp"
+            android:text="TextView"
+            android:textColor="#03A9F4"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/EditEventFrag_details_TV"
+            android:layout_width="match_parent"
+            android:layout_height="293dp"
+            android:text="TextView"
+            android:textColor="#03A9F4"
+            android:textSize="26sp" />
+
+    </LinearLayout>
+</FrameLayout>

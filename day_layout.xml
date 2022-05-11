@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dayLayout_placeholder"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/dayView_backImage_IV"
@@ -62,13 +62,14 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
+            <EditText
                 android:id="@+id/dayView_reminder1_TV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:gravity="center_vertical"
-                android:text="@string/no_reminders"
+                android:hint="@string/no_reminders"
+                android:inputType="text"
                 android:textSize="24sp" />
 
             <Button
@@ -100,13 +101,14 @@
             android:background="@color/background_shade"
             android:orientation="horizontal">
 
-            <TextView
+            <EditText
                 android:id="@+id/dayView_event1_TV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:gravity="center_vertical"
-                android:text="@string/no_events"
+                android:hint="@string/no_events"
+                android:inputType="text"
                 android:textSize="24sp" />
 
             <Button
@@ -119,41 +121,20 @@
         </LinearLayout>
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/editText_test"
-        android:layout_width="237dp"
-        android:layout_height="98dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="36dp"
-        android:ems="10"
-        android:hint="testing text here..."
-        android:inputType="textPersonName"
+    <ListView
+        android:id="@+id/dayView_eventsDisplay_TV"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="#80272727"
+        android:minHeight="50dp"
+        android:text="Todays events..."
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dayView_eventLayout_LL" />
 
-    <Button
-        android:id="@+id/saveTestText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:text="Save"
-        app:layout_constraintBottom_toBottomOf="@+id/editText_test"
-        app:layout_constraintStart_toEndOf="@+id/editText_test"
-        app:layout_constraintTop_toTopOf="@+id/editText_test"
-        app:layout_constraintVertical_bias="0.48" />
 
-    <ListView
-        android:id="@+id/test_displayData_LV"
-        android:layout_width="341dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:background="#40000000"
-        android:text="TextView"
-        android:textColor="#F3F3F3"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/saveTestText"
-        app:layout_constraintStart_toStartOf="@+id/editText_test"
-        app:layout_constraintTop_toBottomOf="@+id/editText_test"
-        tools:text="Placeholder text just here" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

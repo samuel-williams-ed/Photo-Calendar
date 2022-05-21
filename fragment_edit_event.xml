@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragEditEvent_frame_FL"
+    android:tag="edit_event_fragment_tag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".editEventFragment">
@@ -23,29 +24,54 @@
             android:textColor="#03A9F4"
             android:textSize="24sp" />
 
-        <TextView
+        <EditText
             android:id="@+id/EditEventFrag_name_TV"
             android:layout_width="match_parent"
             android:layout_height="86dp"
-            android:text="TextView"
+            android:hint="@string/Event_Name"
             android:textColor="#03A9F4"
             android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/frag_editName_addButton_BU"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_reminder"
+            tools:text="@string/add_reminder" />
 
         <TextView
             android:id="@+id/EditEventFrag_location_TV"
             android:layout_width="match_parent"
             android:layout_height="129dp"
-            android:text="TextView"
+            android:hint="@string/Event_Location"
             android:textColor="#03A9F4"
             android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/frag_editLocation_addButton_BU"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_reminder" />
 
         <TextView
             android:id="@+id/EditEventFrag_details_TV"
             android:layout_width="match_parent"
-            android:layout_height="293dp"
-            android:text="TextView"
+            android:layout_height="wrap_content"
+            android:hint="@string/Event_Details"
             android:textColor="#03A9F4"
             android:textSize="26sp" />
+
+        <Button
+            android:id="@+id/frag_editDetails_addButton_BU"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_reminder" />
+
+        <Button
+            android:id="@+id/EditEventFrag_Delete_BU"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Remove Event" />
 
     </LinearLayout>
 </FrameLayout>
